@@ -1,3 +1,4 @@
+//! 867: Body Locations
 use dicebag::DiceExt;
 use serde::{Deserialize, Serialize};
 
@@ -21,6 +22,8 @@ pub enum BodyLocation {
 
 impl BodyLocation {
     /// Generate a random body location.
+    /// 
+    // Note that not all available [BodyLocation] are included in random generation.
     pub fn new() -> Self {
         // T867
         match 1.d20() {

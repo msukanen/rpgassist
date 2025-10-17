@@ -1,4 +1,6 @@
-//! Colors!
+//! 865: Color
+//! 
+//! Some colors are exotic in some contexts…
 use dicebag::DiceExt;
 use serde::{Deserialize, Serialize};
 

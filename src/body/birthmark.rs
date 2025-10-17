@@ -1,3 +1,4 @@
+//! 866: Birthmarks
 use dicebag::DiceExt;
 use serde::{Deserialize, Serialize};
 
