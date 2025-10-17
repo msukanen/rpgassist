@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 pub enum ExoticColor {
     Dark(Box<ExoticColor>),
     Pastel(Box<ExoticColor>),
-    // T865
+    // T-865
     Red, Crimson, Scarlet, BloodRed,
     RedOrange, SunsetOrange,
     Orange,
