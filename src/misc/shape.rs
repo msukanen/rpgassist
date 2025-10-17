@@ -1,3 +1,4 @@
+//! Shapes for various purposes.
 use dicebag::DiceExt;
 use serde::{Deserialize, Serialize};
 

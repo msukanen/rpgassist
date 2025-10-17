@@ -1,3 +1,4 @@
+//! Colors!
 use dicebag::DiceExt;
 use serde::{Deserialize, Serialize};
 
