@@ -2,7 +2,7 @@ use dicebag::DiceExt;
 use serde::{Deserialize, Serialize};
 
 /// Genders, obviously …
-#[derive(Debug, Deserialize, Serialize, PartialEq)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Clone)]
 pub enum Gender {
     Unspecified,
     Female,
