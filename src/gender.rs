@@ -5,8 +5,15 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Deserialize, Serialize, PartialEq, Clone)]
 pub enum Gender {
     Unspecified,
+    Male,
     Female,
-    Male
+}
+
+impl PartialOrd for Gender {
+    /// All genders (or lack of such) are treated equal.
+    fn partial_cmp(&self, _: &Self) -> Option<std::cmp::Ordering> {
+        Some(std::cmp::Ordering::Equal)
+    }
 }
 
 impl Gender {
@@ -20,4 +27,8 @@ impl Gender {
         } <= 10 { Self::Male }
         else { Self::Female }
     }
+}
+
+pub trait GenderedDisplay {
+    fn display_gendered(&self, gender: &Gender) -> std::fmt::Result;
 }
