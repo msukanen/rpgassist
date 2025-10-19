@@ -28,7 +28,3 @@ impl Gender {
         else { Self::Female }
     }
 }
-
-pub trait GenderedDisplay {
-    fn display_gendered(&self, gender: &Gender) -> std::fmt::Result;
-}
