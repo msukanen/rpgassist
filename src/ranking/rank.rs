@@ -10,6 +10,10 @@ pub struct Rank {
     value: i32
 }
 
+pub trait IsRanked {
+    fn rank(&self) -> Rank;
+}
+
 impl Rank {
     /// Make a new rank.
     fn new(value: i32) -> Self {
@@ -34,6 +38,9 @@ impl Rank {
             _ => "Rank 11+",
         }
     }
+
+    pub const AVERAGE: Rank = Rank { value: 3 };
+    pub const NONE: Rank = Rank { value: 0 };
 }
 
 impl std::fmt::Display for Rank {
