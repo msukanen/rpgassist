@@ -28,3 +28,23 @@ impl Gender {
         else { Self::Female }
     }
 }
+
+impl From<&str> for Gender {
+    fn from(value: &str) -> Self {
+        match value.to_lowercase().as_str() {
+            "m"|"male"|"mies" => Gender::Male,
+            "f"|"n"|"female"|"nainen"|"t"|"tyttö"|"tytto" => Gender::Female,
+            _ => unimplemented!("No such gender as '{value}' defined.")
+        }
+    }
+}
+
+impl From<Option<String>> for Gender {
+    fn from(value: Option<String>) -> Self {
+        if let Some(value) = value {
+            Self::from(value.as_str())
+        } else {
+            Gender::Unspecified
+        }
+    }
+}
