@@ -50,5 +50,5 @@ impl From<Option<String>> for Gender {
 }
 
 pub trait HasGender {
-    fn gender(&self) -> Gender
+    fn gender(&self) -> Gender;
 }
