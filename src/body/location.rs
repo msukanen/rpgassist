@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::direction::bilateral::Bilateral;
 
-#[derive(Debug, Deserialize, Serialize, Hash)]
+#[derive(Debug, Deserialize, Serialize, Hash, Clone)]
 pub enum BodyLocation {
     Abdomen,
     Arm(Bilateral),

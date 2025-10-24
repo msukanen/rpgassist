@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{body::location::BodyLocation, misc::{color::ExoticColor, shape::Shape}};
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Birthmark {
     pub location: BodyLocation,
     pub exotic_color: Option<ExoticColor>,

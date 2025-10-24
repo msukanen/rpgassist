@@ -2,7 +2,7 @@
 use dicebag::DiceExt;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub enum Shape {
     //Animal,// TODO: impl a bunch of animal types?
     AnimalOfChoice,// temporary until Animal above is defined more in depth.
