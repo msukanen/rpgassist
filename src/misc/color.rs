@@ -4,7 +4,7 @@
 use dicebag::DiceExt;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub enum ExoticColor {
     Dark(Box<ExoticColor>),
     Pastel(Box<ExoticColor>),
