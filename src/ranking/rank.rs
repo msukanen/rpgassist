@@ -107,7 +107,7 @@ impl PartialOrd<Rank> for i32 {
 
 impl From<i32> for Rank {
     fn from(value: i32) -> Self {
-        Self { value }
+        Self::new(value)
     }
 }
 

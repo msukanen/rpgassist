@@ -6,3 +6,4 @@ pub mod gender;
 pub mod misc;
 pub mod modifier;
 pub mod ranking;
+pub mod stat;
