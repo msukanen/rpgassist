@@ -10,8 +10,18 @@ pub struct Rank {
     value: i32
 }
 
+impl Default for Rank {
+    fn default() -> Self {
+        Rank { value: 0 }
+    }
+}
+
+/// A trait for anything with 'rank'.
 pub trait IsRanked {
+    /// Get current [Rank].
     fn rank(&self) -> Rank;
+    /// Get a mutable reference to current [Rank].
+    fn rank_mut(&mut self) -> &mut Rank;
 }
 
 impl Rank {
