@@ -24,6 +24,16 @@ pub trait IsRanked {
     fn rank_mut(&mut self) -> &mut Rank;
 }
 
+impl IsRanked for i32 {
+    fn rank(&self) -> Rank {
+        Rank { value: *self }
+    }
+    
+    fn rank_mut(&mut self) -> &mut Rank {
+        panic!("Cannot mutate a primitive!")
+    }
+}
+
 impl Rank {
     /// Make a new rank.
     fn new(value: i32) -> Self {
