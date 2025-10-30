@@ -1,5 +1,5 @@
 use dicebag::DiceExt;
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
 
 /// Genders, obviously …
 #[derive(Debug, Deserialize, Serialize, PartialEq, Clone, Copy)]
@@ -16,13 +16,42 @@ impl PartialOrd for Gender {
     }
 }
 
+fn bias10_filter<'de, D>(deserializer: D) -> Result<u32, D::Error>
+where D: Deserializer<'de> {
+    let v = u32::deserialize(deserializer)?;
+    Ok(v.min(10))
+}
+
+#[derive(Debug, Deserialize, Clone, Copy)]
+pub struct Bias10 {
+    #[serde(deserialize_with = "bias10_filter")]
+    value: u32,
+}
+
+#[derive(Debug, Deserialize, Clone, Copy)]
+pub enum GenderBias {
+    Male(Bias10),
+    Female(Bias10),
+    None
+}
+
+impl Default for GenderBias {
+    fn default() -> Self {
+        Self::None
+    }
+}
+
+pub trait HasGenderBias {
+    fn gender_bias(&self) -> GenderBias;
+}
+
 impl Gender {
     /// Generate a random gender, with or without bias toward one or the other.
-    pub fn new(bias: Option<Gender>) -> Self {
+    pub fn new(bias: GenderBias) -> Self {
         if 1.d20() +
         match bias {
-            Some(Self::Male) => -2,
-            Some(Self::Female) => 2,
+            GenderBias::Male(v) => -(v.value as i32),
+            GenderBias::Female(v) => v.value as i32,
             _ => 0
         } <= 10 { Self::Male }
         else { Self::Female }
