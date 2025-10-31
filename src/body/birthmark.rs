@@ -15,7 +15,7 @@ impl Birthmark {
     /// Generate a random birthmark with location; also color if color is other than "natural".
     // T-866
     pub fn new() -> Self {
-        let location = BodyLocation::new();
+        let location = BodyLocation::random();
         let exotic_color = if 1.d20() == 1 {Some(ExoticColor::new())} else {None};
         let shape = Shape::new();
 
