@@ -13,18 +13,20 @@ pub enum BodyLocation {
     Chest,
     Eye(Bilateral),
     Face,
+    Fingers { count: u8, side: Bilateral },
     Foot(Bilateral),
     Genitals,
     Hand(Bilateral),
     Head,
     Leg(Bilateral),
+    Thumb(Bilateral),
 }
 
 impl BodyLocation {
     /// Generate a random body location.
     /// 
     // Note that not all available [BodyLocation] are included in random generation.
-    pub fn new() -> Self {
+    pub fn random() -> Self {
         // T867
         match 1.d20() {
             ..=1 => Self::Foot(Bilateral::Right),
