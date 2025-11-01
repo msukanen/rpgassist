@@ -1,4 +1,6 @@
 //! 867: Body Locations
+use std::fmt::Display;
+
 use dicebag::DiceExt;
 use serde::{Deserialize, Serialize};
 
@@ -44,6 +46,27 @@ impl BodyLocation {
             17 => Self::Hand(Bilateral::Left),
             18 => Self::Head,
             _ => Self::Face
+        }
+    }
+}
+
+impl Display for BodyLocation {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Abdomen => write!(f, "abdomen"),
+            Self::Arm(lr) => write!(f, "{lr} arm"),
+            Self::Back => write!(f, "back"),
+            Self::Buttocks => write!(f, "buttocks"),
+            Self::Chest => write!(f, "chest"),
+            Self::Eye(lr) => write!(f, "{lr} eye"),
+            Self::Face => write!(f, "face"),
+            Self::Fingers { count, side } => write!(f, "{count} finger{} from {side} hand", if *count!=1 {"s"} else {""}),
+            Self::Foot(lr) => write!(f, "{lr} foot"),
+            Self::Genitals => write!(f, "genitals"),
+            Self::Hand(lr) => write!(f, "{lr} hand"),
+            Self::Head => write!(f, "head"),
+            Self::Leg(lr) => write!(f, "{lr} leg"),
+            Self::Thumb(lr) => write!(f, "{lr} thumb"),
         }
     }
 }
