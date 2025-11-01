@@ -9,7 +9,7 @@
 //! * **Mag**ical Aptitude
 //! * **Str**ength (physical)
 //! * **Will** (strength of one's mind)
-use std::ops::{Add, AddAssign, Sub, SubAssign};
+use std::{fmt::Display, ops::{Add, AddAssign, Sub, SubAssign}};
 
 use serde::{Deserialize, Serialize};
 
@@ -17,6 +17,22 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash)]
 pub enum StatBase {
     Age, App, Cha, Con, Dex, Int, Mag, Str, Will,
+}
+
+impl Display for StatBase {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", match self {
+            Self::Age => "age",
+            Self::App => "APP",
+            Self::Cha => "CHA",
+            Self::Con => "CON",
+            Self::Dex => "DEX",
+            Self::Int => "INT",
+            Self::Mag => "MAG",
+            Self::Str => "STR",
+            Self::Will => "Willpower",
+        })
+    }
 }
 
 /// Stat types with value assigned.
@@ -169,6 +185,12 @@ impl SubAssign<Stat> for Stat {
             panic!("Cannot sub_assign different types of Stat!")
         }
         *self -= rhs.value()
+    }
+}
+
+impl Display for Stat {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{} {:+}", self.stat_base(), self.value())
     }
 }
 
