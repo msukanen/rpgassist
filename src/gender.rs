@@ -1,6 +1,8 @@
 use dicebag::DiceExt;
 use serde::{Deserialize, Deserializer, Serialize};
 
+use crate::resolve::resolve_in_place::ResolveInPlace;
+
 /// Genders, obviously …
 #[derive(Debug, Deserialize, Serialize, PartialEq, Clone, Copy)]
 pub enum Gender {
@@ -56,6 +58,13 @@ impl Gender {
         } <= 10 { Self::Male }
         else { Self::Female }
     }
+
+    pub fn get_or_random(&self) -> Self {
+        match self {
+            Self::Unspecified => Self::new(GenderBias::None),
+            _ => *self
+        }
+    }
 }
 
 impl From<&str> for Gender {
@@ -80,4 +89,19 @@ impl From<Option<String>> for Gender {
 
 pub trait HasGender {
     fn gender(&self) -> Gender;
+}
+
+impl Default for Gender {
+    fn default() -> Self {
+        Self::Unspecified
+    }
+}
+
+impl ResolveInPlace for Gender {
+    fn resolve(&mut self) {
+        match self {
+            Self::Unspecified => *self = Self::new(GenderBias::None),
+            _ => ()
+        }
+    }
 }
