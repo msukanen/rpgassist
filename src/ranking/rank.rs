@@ -1,6 +1,7 @@
 use std::ops::{Add, AddAssign, Sub, SubAssign};
 
 use serde::{Deserialize, Serialize};
+use paste::paste;
 
 use crate::details::DetailedDisplay;
 
@@ -21,18 +22,19 @@ pub trait IsRanked {
     /// Get current [Rank].
     fn rank(&self) -> Rank;
     /// Get a mutable reference to current [Rank].
-    fn rank_mut(&mut self) -> &mut Rank;
+    fn rank_mut(&mut self) -> &mut Rank {
+        panic!("Cannot mutate: mutator not implemented/applicable for this type!")
+    }
 }
 
-impl IsRanked for i32 {
-    fn rank(&self) -> Rank {
-        Rank { value: *self }
-    }
-    
-    fn rank_mut(&mut self) -> &mut Rank {
-        panic!("Cannot mutate a primitive!")
-    }
-}
+impl IsRanked for i32 { fn rank(&self) -> Rank { Rank { value: *self }}}
+impl IsRanked for &i32 { fn rank(&self) -> Rank { Rank { value: **self }}}
+
+impl IsRanked for u32 { fn rank(&self) -> Rank { Rank { value: (*self).min(i32::MAX as u32) as i32 }}}
+impl IsRanked for &u32 { fn rank(&self) -> Rank { Rank { value: (**self).min(i32::MAX as u32) as i32 }}}
+
+impl IsRanked for u8 { fn rank(&self) -> Rank { Rank { value: *self as i32 }}}
+impl IsRanked for &u8 { fn rank(&self) -> Rank { Rank { value: **self as i32 }}}
 
 impl Rank {
     /// Make a new rank.
@@ -125,11 +127,20 @@ impl PartialOrd<Rank> for i32 {
     }
 }
 
-impl From<i32> for Rank {
-    fn from(value: i32) -> Self {
-        Self::new(value)
-    }
+macro_rules! impl_from_primitive_for_rank {
+    ($prim:expr) => {paste!{
+        impl From<[<i $prim>]> for Rank { fn from(value: [<i $prim>]) -> Self { Self::new( value.try_into().unwrap() )}}
+        impl From<&[<i $prim>]> for Rank { fn from(value: &[<i $prim>]) -> Self { Self::new( (*value).try_into().unwrap() )}}
+        impl From<[<u $prim>]> for Rank { fn from(value: [<u $prim>]) -> Self { Self::new( value.try_into().unwrap() )}}
+        impl From<&[<u $prim>]> for Rank { fn from(value: &[<u $prim>]) -> Self { Self::new( (*value).try_into().unwrap() )}}
+    }};
 }
+impl_from_primitive_for_rank!(8);
+impl_from_primitive_for_rank!(16);
+impl_from_primitive_for_rank!(32);
+impl_from_primitive_for_rank!(64);
+impl_from_primitive_for_rank!(128);
+impl_from_primitive_for_rank!(size);
 
 #[cfg(test)]
 mod rank_tests {

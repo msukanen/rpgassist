@@ -6,9 +6,11 @@ use crate::resolve::resolve_in_place::ResolveInPlace;
 /// Genders, obviously …
 #[derive(Debug, Deserialize, Serialize, PartialEq, Clone, Copy)]
 pub enum Gender {
+    /// Gender not (yet) resolved.
     Unspecified,
     Male,
     Female,
+    /// Gender is either not applicable or just doesn't matter (at all).
     NeverApplicable,
 }
 
