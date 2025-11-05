@@ -5,6 +5,8 @@ edition = "2024"
 authors = ["Markku Sukanen <markku.sukanen@gmail.com>"]
 readme = "README.md"
 license = "MIT OR Apache-2.0"
+repository = "https://github.com/msukanen/rpgassist"
+description = "Simple assist traits, serde (de)serializers, etc."
 
 [dependencies]
 dicebag = "0.3"
