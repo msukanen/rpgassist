@@ -1,3 +1,7 @@
+//! Natural-join a list of strings.
+//! 
+//! Instead of producing typical `"A, B, C, D"`, we make e.g. `"A, B, C and D"`.
+//! 
 use std::fmt::Display;
 
 pub trait NaturalJoin {

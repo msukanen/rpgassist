@@ -1,3 +1,4 @@
+//! Bilateralisms - left/right, front/back, etc.
 use std::fmt::Display;
 
 use dicebag::DiceExt;

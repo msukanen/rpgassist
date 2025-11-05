@@ -1,3 +1,4 @@
+//! Rank - for skills and stats, etc.
 use std::ops::{Add, AddAssign, Sub, SubAssign};
 
 use serde::{Deserialize, Serialize};
@@ -27,14 +28,27 @@ pub trait IsRanked {
     }
 }
 
-impl IsRanked for i32 { fn rank(&self) -> Rank { Rank { value: *self }}}
-impl IsRanked for &i32 { fn rank(&self) -> Rank { Rank { value: **self }}}
+macro_rules! define_isranked_for_prim {
+    ($bits:expr) => {paste!{
+        impl IsRanked for [<i $bits>]{ fn rank(&self) -> Rank { Rank {
+            value: (*self).try_into()
+                    .expect(format!("Value '{:+}' is WAY too big for the teensy i32 to hold onto…!", self).as_str())}}}
+        impl IsRanked for &[<i $bits>]{ fn rank(&self) -> Rank { (**self).rank() }}
+        impl IsRanked for [<u $bits>]{ fn rank(&self) -> Rank { Rank {
+            value: (*self).try_into()
+                    .expect({
+                        log::error!("Value '{:+}' is WAY too big for the teensy i32 to hold onto…!", self);
+                        format!("Value '{:+}' is WAY too big for the teensy i32 to hold onto…!", self)}.as_str())}}}
+        impl IsRanked for &[<u $bits>]{ fn rank(&self) -> Rank { (**self).rank() }}
+    }};
+}
 
-impl IsRanked for u32 { fn rank(&self) -> Rank { Rank { value: (*self).min(i32::MAX as u32) as i32 }}}
-impl IsRanked for &u32 { fn rank(&self) -> Rank { Rank { value: (**self).min(i32::MAX as u32) as i32 }}}
-
-impl IsRanked for u8 { fn rank(&self) -> Rank { Rank { value: *self as i32 }}}
-impl IsRanked for &u8 { fn rank(&self) -> Rank { Rank { value: **self as i32 }}}
+define_isranked_for_prim!(8);
+define_isranked_for_prim!(16);
+define_isranked_for_prim!(32);
+define_isranked_for_prim!(64);
+define_isranked_for_prim!(128);
+define_isranked_for_prim!(size);
 
 impl Rank {
     /// Make a new rank.
@@ -172,5 +186,14 @@ mod rank_tests {
         let mut r = Rank::new(0);
         r -= 7;
         assert_eq!(-7, r);
+    }
+
+    #[test]
+    #[should_panic]
+    fn assigning_u64max_panix() {
+        let max = u64::MAX;
+        let _ = env_logger::try_init();
+        let _ = max.rank();
+        assert_eq!("Should've paniced before this assert…", "42")
     }
 }

@@ -10,3 +10,4 @@ pub mod modifier;
 pub mod ranking;
 pub mod resolve;
 pub mod stat;
+pub mod serialize;

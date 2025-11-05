@@ -206,10 +206,18 @@ mod stat_tests {
     }
 
     #[test]
-    fn zero_clamp_works() {
+    #[should_panic]
+    fn value_clamp_works() {
         let stat = Stat::Str { val: 10 };
         let stat = stat - 13;
+        // the assert below *should* panic ... expected value being '1' afterall.
         assert_eq!(0, stat.value());
+        // … but if it doesn't panic! for some reason… this one should:
+        assert_eq!(1, stat.value());
+        // uff... superposition bits?
+        panic!("I don't want to deal with quantum mechanics! XD");
+        let _ = env_logger::try_init();
+        log::error!("Rust flawed. Call a medic!")
     }
 
     #[test]

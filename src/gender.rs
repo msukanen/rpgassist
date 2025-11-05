@@ -1,3 +1,14 @@
+//! Gender and gender related functionality.
+//! 
+//! # Random Gender
+//! **a)** 50/50 [Gender::random]
+//! **b)** [GenderBias]'ed [Gender::random_biased].
+//! 
+//! # Resolvers
+//! **a)** direct resolver, [Gender::resolve]
+//! **b)** biased resolver [Gender::resolve_biased],
+//! which both work in-place with `&mut self`.
+//! 
 use dicebag::DiceExt;
 use serde::{Deserialize, Deserializer, Serialize};
 
@@ -21,6 +32,7 @@ impl PartialOrd for Gender {
     }
 }
 
+/// Deserializer for [Bias10] values.
 fn bias10_filter<'de, D>(deserializer: D) -> Result<u32, D::Error>
 where D: Deserializer<'de> {
     let v = u32::deserialize(deserializer)?;
@@ -88,6 +100,7 @@ impl Gender {
         else { Self::Female }
     }
 
+    /// Get set [Gender] or a random one.
     pub fn get_or_random(&self) -> Self {
         match self {
             Self::Unspecified => Self::random_biased(GenderBias::None),
@@ -95,6 +108,10 @@ impl Gender {
         }
     }
 
+    /// Resolve an [unspecified][Gender::Unspecified] [gender][Gender] in-place.
+    /// [`bias`][GenderBias] may or may not affect the final result.
+    /// 
+    /// If the [gender][Gender] has already been resolved, noting happens.
     pub fn resolve_biased(&mut self, bias: GenderBias) {
         match self {
             Self::Unspecified => *self = Self::random_biased(bias),
@@ -104,6 +121,9 @@ impl Gender {
 }
 
 impl From<&str> for Gender {
+    /// Generate a [Gender] from given string.
+    /// 
+    /// **NOTE** that this function *will* panic if fed a string it doesn't comprehend.
     fn from(value: &str) -> Self {
         match value.to_lowercase().as_str() {
             "m"|"male"|"mies" => Gender::Male,
@@ -114,6 +134,11 @@ impl From<&str> for Gender {
 }
 
 impl From<Option<String>> for Gender {
+    /// Attempt to derive a [Gender] from the given [`value`][Option<String>].
+    /// 
+    /// # Returns
+    /// **a)** proper [Gender] or
+    /// **b)** [Gender::Unspecified]
     fn from(value: Option<String>) -> Self {
         if let Some(value) = value {
             Self::from(value.as_str())
@@ -123,11 +148,14 @@ impl From<Option<String>> for Gender {
     }
 }
 
+/// A trait for anything that routes gender information.
 pub trait HasGender {
     fn gender(&self) -> Gender;
 }
 
 impl Default for Gender {
+    /// [Gender::Unspecified] is a rather convenient default value instead of
+    /// randomizing between [male][Gender::Male] and [female][Gender::Female].
     fn default() -> Self {
         Self::Unspecified
     }
