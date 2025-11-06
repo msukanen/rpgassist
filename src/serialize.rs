@@ -32,3 +32,39 @@ pub mod serial_ordering {
         })
     }
 }
+
+pub mod serial_strings {
+    use serde::{Deserialize, Deserializer};
+
+    /// Deserializes any field that can be either
+    /// **a)** single String or
+    /// **b)** Vec<String>.
+    /// 
+    /// ```jsonc
+    /// { "field": "Some string" },
+    /// { "field": ["String #1", "String #2"] },
+    /// /*
+    /// struct Field {
+    ///     ...
+    ///     #[serde(deserialize_with = "deserialize_strings_to_vec")]
+    ///     field: Vec<String>,
+    ///     ...
+    /// }
+    /// */
+    /// ```
+    pub(crate) fn deserialize_strings_to_vec<'de, D>(deserializer: D) -> Result<Vec<String>, D::Error>
+    where D: Deserializer<'de> {
+        // helper for the two shapes
+        #[derive(Deserialize)]
+        #[serde(untagged)]
+        enum StringHalp {
+            S(String),
+            M(Vec<String>),
+        }
+
+        match StringHalp::deserialize(deserializer)? {
+            StringHalp::S(s) => Ok(vec![s]),
+            StringHalp::M(v) => Ok(v),
+        }
+    }
+}
