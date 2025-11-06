@@ -68,3 +68,18 @@ pub mod serial_strings {
         }
     }
 }
+
+/// "Unsigned"-f64 for when you need your f64 always be 0.0+
+pub mod serial_uf64 {
+    use serde::{Deserialize, Deserializer, de::Error};
+
+    pub fn deserialize<'de,D>(deserializer: D) -> Result<f64, D::Error>
+    where D: Deserializer<'de> {
+        let val = f64::deserialize(deserializer)?;
+        if val < 0.0 {
+            Err(Error::custom(format!("uf64 value requested, got '{val}' instead…")))
+        } else {
+            Ok(val)
+        }
+    }
+}
