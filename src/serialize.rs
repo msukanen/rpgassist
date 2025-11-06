@@ -52,7 +52,7 @@ pub mod serial_strings {
     /// }
     /// */
     /// ```
-    pub(crate) fn deserialize_strings_to_vec<'de, D>(deserializer: D) -> Result<Vec<String>, D::Error>
+    pub fn deserialize_strings_to_vec<'de, D>(deserializer: D) -> Result<Vec<String>, D::Error>
     where D: Deserializer<'de> {
         // helper for the two shapes
         #[derive(Deserialize)]
