@@ -35,6 +35,23 @@ impl Display for StatBase {
     }
 }
 
+impl StatBase {
+    /// Generate a sensible 'default' [Stat] instance.
+    pub fn default(&self) -> Stat {
+        match self {
+            Self::Age => Stat::Age { val: 18 },// 18 is rather common 'default' as minimum age for adventurers.
+            Self::App => Stat::App { val: 0 },// ±0 from racial 'average'.
+            Self::Cha => Stat::Cha { val: 0 },// ±0 from racial 'average'.
+            Self::Con => Stat::Con { val: 10 },// generic average (FYI systems may differ…).
+            Self::Dex => Stat::Dex { val: 10 },// generic average (FYI systems may differ…).
+            Self::Int => Stat::Int { val: 10 },// generic average (FYI systems may differ…).
+            Self::Mag => Stat::Mag { val: 0 },// zero spell casting capability by default. FYI some systems have it as an 'advantage', etc.
+            Self::Str => Stat::Str { val: 10 },// generic average (FYI systems may differ…).
+            Self::Will => Stat::Will { val: 0 },// ±0 from 'average'.
+        }
+    }
+}
+
 /// Stat types with value assigned.
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub enum Stat {
@@ -216,8 +233,8 @@ mod stat_tests {
         assert_eq!(1, stat.value());
         // uff... superposition bits?
         panic!("I don't want to deal with quantum mechanics! XD");
-        let _ = env_logger::try_init();
-        log::error!("Rust flawed. Call a medic!")
+        //let _ = env_logger::try_init();
+        //log::error!("Rust flawed. Call a medic!")
     }
 
     #[test]
