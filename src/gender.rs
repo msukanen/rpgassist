@@ -143,7 +143,7 @@ impl From<Option<String>> for Gender {
         if let Some(value) = value {
             Self::from(value.as_str())
         } else {
-            Gender::Unspecified
+            Self::random()
         }
     }
 }
