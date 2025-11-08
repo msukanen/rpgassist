@@ -1,3 +1,14 @@
+//! Various serde (de)serializers for variety of uses…
+//! 
+//! # `serial_ordering`
+//! 
+//! (De)serialize `std::cmp::Ordering` in a more or less humanly readable manner.
+//! 
+//! # `serial_strings`
+//! 
+//! Deserializer (no serializer) for creating a `Vec<String>` from either
+//! **a)** a single `String`
+//! **b)** array of `String`s.
 /// Ordering (de)serializer functions live here.
 pub mod serial_ordering {
     use std::cmp::Ordering;

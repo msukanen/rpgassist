@@ -1,4 +1,29 @@
 //! Rank - for skills and stats, etc.
+//! 
+//! # `IsRanked`
+//! 
+//! A trait for anything with numeric 'rank' in some capacity.
+//! 
+//! Pre-defined for: all integer types
+//!    from `i8` to `i128` and `isize` and
+//!    from `u8` to `u128` and `usize`.
+//! 
+//! # `Add<>`, `AddAssign<>`, `Sub<>`, `SubAssign<>`
+//! 
+//! These are defined predefined for [Rank] itself and `i32`.
+//! 
+//! # `From<>`
+//! 
+//! Predefined for all integer types and integer refs, and [Rank] itself ofc.
+//! 
+//! # `PartialEq<>`, `PartialOrd<>`
+//! 
+//! Predefined for [Rank] itself and `i32`.
+//! 
+//! # `Display`, `Default`
+//! 
+//! [Rank] internal value defaults to `0` (zero).
+//! 
 use std::ops::{Add, AddAssign, Sub, SubAssign};
 
 use serde::{Deserialize, Serialize};

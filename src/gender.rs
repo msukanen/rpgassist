@@ -19,9 +19,11 @@ use crate::resolve::resolve_in_place::ResolveInPlace;
 pub enum Gender {
     /// Gender not (yet) resolved.
     Unspecified,
+    /// Ditto.
     Male,
+    /// Ditto.
     Female,
-    /// Gender is either not applicable or just doesn't matter (at all).
+    /// Gender is either never applicable or just doesn't matter (at all).
     NeverApplicable,
 }
 
@@ -73,6 +75,7 @@ impl Default for GenderBias {
     }
 }
 
+/// A trait for anything that has meaningful [GenderBias].
 pub trait HasGenderBias {
     fn gender_bias(&self) -> GenderBias;
 }
@@ -162,6 +165,7 @@ impl Default for Gender {
 }
 
 impl ResolveInPlace for Gender {
+    /// Resolve gender (randomly) in-place with 50/50 "bias".
     fn resolve(&mut self) {
         match self {
             Self::Unspecified => *self = Self::random_biased(GenderBias::None),

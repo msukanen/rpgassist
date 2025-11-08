@@ -2,7 +2,9 @@
 //! 
 //! **a)** "detailed display" of… details.
 //! **b)** "proper case" of strings for labels etc.
-
+//! 
+//! See: [DetailedDisplay], [ProperCaseExt], [NewsPaperCaseExt]
+//! 
 /// A trait akin to `.to_string()` etc., but meant for delivery of more
 /// detailed information, leaving the other functions to deal with simpler
 /// things.
