@@ -153,6 +153,7 @@ impl From<Option<String>> for Gender {
 
 /// A trait for anything that routes gender information.
 pub trait HasGender {
+    /// Get [Gender].
     fn gender(&self) -> Gender;
 }
 
