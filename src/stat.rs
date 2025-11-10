@@ -88,6 +88,16 @@ impl Stat {
     }
 }
 
+impl PartialEq<Stat> for Stat {
+    fn eq(&self, other: &Stat) -> bool {
+        if StatBase::from(self) != StatBase::from(other) {
+            return false;
+        }
+
+        self.value() == other.value()
+    }
+}
+
 impl From<&Stat> for StatBase {
     /// Derive [StatBase] of the given `stat`.
     fn from(stat: &Stat) -> Self {
