@@ -151,6 +151,15 @@ impl From<Option<String>> for Gender {
     }
 }
 
+impl From<Option<&str>> for Gender {
+    fn from(value: Option<&str>) -> Self {
+        match value {
+            None => Self::random(),
+            Some(v) => Self::from(v)
+        }
+    }
+}
+
 /// A trait for anything that routes gender information.
 pub trait HasGender {
     /// Get [Gender].
