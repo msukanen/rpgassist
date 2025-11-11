@@ -9,7 +9,7 @@
 //! * **Mag**ical Aptitude
 //! * **Str**ength (physical)
 //! * **Will** (strength of one's mind)
-use std::{fmt::Display, ops::{Add, AddAssign, Sub, SubAssign}};
+use std::{fmt::Display, hash::Hash, ops::{Add, AddAssign, Sub, SubAssign}};
 
 use serde::{Deserialize, Serialize};
 
@@ -66,6 +66,23 @@ pub enum Stat {
     Will { val: i32 },
 }
 
+impl Hash for Stat {
+    /// Hashing [Stat] by identity only, ignoring contents.
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        match self {
+            Self::Age { .. } => 0.hash(state),
+            Self::App { .. } => 1.hash(state),
+            Self::Cha { .. } => 2.hash(state),
+            Self::Con { .. } => 3.hash(state),
+            Self::Dex { .. } => 4.hash(state),
+            Self::Int { .. } => 5.hash(state),
+            Self::Mag { .. } => 6.hash(state),
+            Self::Str { .. } => 7.hash(state),
+            Self::Will {.. } => 8.hash(state),
+        }
+    }
+}
+
 impl Stat {
     /// Get the underlying stat value.
     pub fn value(&self) -> i32 {
@@ -88,15 +105,12 @@ impl Stat {
     }
 }
 
-impl PartialEq<Stat> for Stat {
+impl PartialEq for Stat {
     fn eq(&self, other: &Stat) -> bool {
-        if StatBase::from(self) != StatBase::from(other) {
-            return false;
-        }
-
-        self.value() == other.value()
+        StatBase::from(self) == StatBase::from(other) && self.value() == other.value()
     }
 }
+impl Eq for Stat {}
 
 impl From<&Stat> for StatBase {
     /// Derive [StatBase] of the given `stat`.
