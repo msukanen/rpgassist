@@ -3,6 +3,7 @@ pub mod details;
 pub mod direction;
 pub mod ext;
 pub use ext::NaturalJoin;
+pub mod id;
 pub mod gender;
 pub mod misc;
 pub mod modifier;
