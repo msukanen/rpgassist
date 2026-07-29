@@ -54,7 +54,7 @@ pub trait IsRanked {
 }
 
 macro_rules! define_isranked_for_prim {
-    ($bits:expr) => {paste!{
+    ($bits:tt) => {paste!{
         impl IsRanked for [<i $bits>]{ fn rank(&self) -> Rank { Rank {
             value: (*self).try_into()
                     .expect(format!("Value '{:+}' is WAY too big for the teensy i32 to hold onto…!", self).as_str())}}}
