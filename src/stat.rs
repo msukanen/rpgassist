@@ -53,7 +53,7 @@ impl StatBase {
 }
 
 /// Stat types with value assigned.
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone, Eq)]
 pub enum Stat {
     Age { val: i32 },
     App { val: i32 },
@@ -110,7 +110,6 @@ impl PartialEq for Stat {
         StatBase::from(self) == StatBase::from(other) && self.value() == other.value()
     }
 }
-impl Eq for Stat {}
 
 impl From<&Stat> for StatBase {
     /// Derive [StatBase] of the given `stat`.
